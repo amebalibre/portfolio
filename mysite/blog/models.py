@@ -49,6 +49,28 @@ class Tag(models.Model):
         )
 
 
+class Image(models.Model):
+    """Images of posts."""
+
+    name = models.CharField(
+        max_length=15,
+        null=False,
+        unique=True,
+    )
+    image = models.ImageField()
+
+    def __str__(self):
+        """Printable object."""
+        return self.name
+
+    class Meta:
+        """Metadata."""
+
+        ordering = (
+            'name',
+        )
+
+
 class Post(models.Model):
     """Post of Blog."""
 
@@ -58,8 +80,8 @@ class Post(models.Model):
         null=False,
         unique=True,
     )
-    image = models.ImageField()
     content = models.CharField(max_length=1000)
+    images = models.ManyToManyField(Image)
     pub_date = models.DateTimeField('Date Published')
     tags = models.ManyToManyField(Tag)
 

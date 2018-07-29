@@ -3,6 +3,8 @@ from django.test import TestCase
 from django.db.utils import DataError
 from django.db.utils import IntegrityError
 
+from .models import Image
+from .models import Post
 from .models import Tag
 
 
@@ -11,11 +13,43 @@ def create_tag(name, color=None):
     if color:
         return Tag.objects.create(
             name=name,
-            color=color
+            color=color,
         )
     else:
         return Tag.objects.create(
             name=name,
+        )
+
+
+def create_image(name, image=None):
+    """Shortcut creation images."""
+    return Image.objects.create(
+        name=name,
+        image=image,
+    )
+
+
+def create_post(title, content=None, pub_date=None):
+    """Shortcut creation images."""
+    if content and pub_date:
+        return Post.objects.create(
+            title=title,
+            content=content,
+            pub_date=pub_date,
+        )
+    elif content and not pub_date:
+        return Post.objects.create(
+            title=title,
+            content=content,
+        )
+    elif not content and pub_date:
+        return Post.objects.create(
+            title=title,
+            pub_date=pub_date,
+        )
+    else:
+        return Post.objects.create(
+            title=title,
         )
 
 
@@ -152,3 +186,85 @@ class TagModelTests(TestCase):
             tag.check_color_format(),
             "Hexadecimal '{hex}' format isn't correctly".format(hex=color),
         )
+
+
+class ImageModelTests(TestCase):
+    """Test for Image model."""
+
+    def test_name_unique(self):
+        """Name should be unique."""
+        name = 'Same name'
+        try:
+            for i in range(2):
+                create_image(name)
+        except IntegrityError as e:
+            val, msg = get_assert_attrs(e, 'unique')
+            self.assertTrue(val, msg)
+        else:
+            self.assertEqual(
+                i,
+                2,
+                msg="It shouldn't be possible to assign the same name."
+            )
+
+    def test_name_not_null(self):
+        """Name must be mandatory."""
+        name = 'can be create'
+        was_created = create_image(name)
+        self.assertEqual(
+            was_created.name,
+            name,
+            msg='This image should be created.'
+        )
+
+        try:
+            wrong_image = create_image(None)
+            self.assertIs(
+                wrong_image.name,
+                None,
+                msg='Exception was spected. Name should have been null.',
+            )
+        except IntegrityError as e:
+            val, msg = get_assert_attrs(e, 'not-null')
+            self.assertTrue(val, msg)
+
+
+class PostModelTests(TestCase):
+    """Test for Post model."""
+
+    def test_title_unique(self):
+        """Title should be unique."""
+        title = 'Same title'
+        try:
+            for i in range(2):
+                create_post(title)
+        except IntegrityError as e:
+            val, msg = get_assert_attrs(e, 'unique')
+            self.assertTrue(e)
+        else:
+            self.assertEqual(
+                i,
+                2,
+                msg="It shouldn't be possible to assign the same title."
+            )
+
+        def test_title_not_null(self):
+            """Title must be mandatory."""
+            title = 'can be create this post'
+            was_created = create_post(title)
+            self.assertEqual(
+                was_created.title,
+                title,
+                msg='This post should be created.'
+            )
+
+            try:
+                wrong_post = create_post(None)
+                self.assertIs(
+                    wrong_post.title,
+                    None,
+                    msg='Exception was spected. Title should have been null.',
+                )
+            except IntegrityError as e:
+                val, msg = get_assert_attrs(e, 'not-null')
+                self.assertTrue(val, msg)
