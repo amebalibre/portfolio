@@ -1,7 +1,10 @@
 """Generic tests."""
+import datetime
+
 from django.test import TestCase
 from django.db.utils import DataError
 from django.db.utils import IntegrityError
+from django.utils import timezone
 
 from .models import Image
 from .models import Post
@@ -268,3 +271,20 @@ class PostModelTests(TestCase):
             except IntegrityError as e:
                 val, msg = get_assert_attrs(e, 'not-null')
                 self.assertTrue(val, msg)
+
+        def test_was_published_with_future_question(self):
+            """was_published() returns False for posts at the future."""
+            time = timezone.now() + datetime.timedelta(days=1)
+            future_question = create_post('On the future', pub_date=time)
+
+            self.assertIs(future_question.was_published(), False)
+
+        def test_was_published_with_recent_question(self):
+            """was_published() returns True for posts at today or on past."""
+            time = timezone.now() - datetime.timedelta(
+                hours=23,
+                minutes=59,
+                seconds=59
+            )
+            recent_question = create_post('On the past', pub_date=time)
+            self.assertIs(recent_question.was_published(), True)
