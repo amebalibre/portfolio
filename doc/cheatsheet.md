@@ -61,14 +61,14 @@ Determinar la visibilidad diferente
 
 # Ejecución de Tests
 
-```bash
-./manage.py test polls
-```
+  ```bash
+  ./manage.py test polls
+  ```
 
- * Ejecutará los tests de la aplicación llamada *polls*
- * Ejecutará las subclases de la clase: django.test.TestCase
- * Crea una DDBB especial para la ejecución de los tests.
- * Busca métodos de pruebas; **aquellos cuyos nombres comienzan con test**.
+*   Ejecutará los tests de la aplicación llamada *polls*
+*   Ejecutará las subclases de la clase: django.test.TestCase
+*   Crea una DDBB especial para la ejecución de los tests.
+*   Busca métodos de pruebas; **aquellos cuyos nombres comienzan con test**.
 
 
 #### Manejo de zonas horarias en django
@@ -102,9 +102,9 @@ admin.site.register(Question)
 
 #### Buena práxis en POST
 
-* Todos los formularios **POST** que están dirigidos a las URLs internas deben utilizar la etiqueta de plantilla `{% csrf_token %}`.
+*   Todos los formularios **POST** que están dirigidos a las URLs internas deben utilizar la etiqueta de plantilla `{% csrf_token %}`.
 
-* La vista siempre debe devolver un objeto `HttpResponseRedirect`, el cual espera recibir un único parámetro, el nombre de la vista. Dejamos un ejemplo:
+*   La vista siempre debe devolver un objeto `HttpResponseRedirect`, el cual espera recibir un único parámetro, el nombre de la vista. Dejamos un ejemplo:
 
 ```python
 # Imports
@@ -129,35 +129,36 @@ python -c "import django; print(django.__path__)"
 
 #### Empaquetando el app
 
-1. Generar un directorio
+1.  Generar un directorio
 
-  ```
-  django-<name>
-  ```
+    ```
+    django-<name>
+    ```
 
-2. Meter el app dentro de `django-<name>`
+2.  Meter el app dentro de `django-<name>`
 
-3. Crear los ficheros
+3.  Crear los ficheros
 
-  ```
-  django-<name>/README.rst
-  django-<name>/LICENSE
-  django-<name>/setup.py
-  django-<name>/MANIFEST.in
-  django-<name>/docs/
-  ```
-  > Revisar [documentación](https://docs.djangoproject.com/es/2.0/intro/reusable-apps/)para más detalle del contenido de cada fichero.
+    ```
+    django-<name>/README.rst
+    django-<name>/LICENSE
+    django-<name>/setup.py
+    django-<name>/MANIFEST.in
+    django-<name>/docs/
+    ```
+    > Revisar [documentación](https://docs.djangoproject.com/es/2.0/intro/reusable-apps/)para más detalle del contenido de cada fichero.
 
-4. Ejecutar el comando
+4.  Ejecutar el comando
 
-  ```bash
-  python setup.py sdist
-  ```
-  > Se generará un fichero tar.gz
+    ```bash
+    python setup.py sdist
+    ```
+    > Se generará un fichero tar.gz
 
-5. Instalar el empaquetado con pip
+5.  Instalar el empaquetado con pip
 
-  ```bash
-  pip install django-polls/dist/django-polls-0.1.tar.gz
-  ```
-  > Nota: Lo ideal sería hacer uso de entornos virtuales para la instalación de las dependencias requeridas por el proyecto.
+    ```bash
+    pip install django-polls/dist/django-polls-0.1.tar.gz
+    ```
+
+    > Nota: Lo ideal sería hacer uso de entornos virtuales para la instalación de las dependencias requeridas por el proyecto.
