@@ -1,15 +1,14 @@
 """Generic tests."""
 from django.test import TestCase
+from django.db.utils import DataError
 from django.db.utils import IntegrityError
 
 from .models import Tag
-import pdb
 
 
 def create_tag(name, color=None):
     """Shortcut creation tags."""
     if color:
-        # pdb.set_trace()
         return Tag.objects.create(
             name=name,
             color=color
@@ -38,7 +37,6 @@ def get_assert_attrs(exception, sql_ex=''):
         return ex_args[0], ex_args[1]
 
     constraint, detail = get_ex_fields()
-    # pdb.set_trace()
 
     return (
         (ex_dict.get(sql_ex) and ex_dict.get(sql_ex) in constraint) or False,
@@ -63,7 +61,6 @@ class TagModelTests(TestCase):
                 create_tag(name)
         except IntegrityError as e:
             val, msg = get_assert_attrs(e, 'unique')
-            # pdb.set_trace()
             self.assertTrue(val, msg)
         else:
             self.assertEqual(
@@ -74,16 +71,15 @@ class TagModelTests(TestCase):
 
     def test_name_not_null(self):
         """Name must be mandatory."""
-        try:
-            name = 'can be create this tag'
-            # pdb.set_trace()
-            was_created = create_tag(name)
-            self.assertEqual(
-                was_created.name,
-                name,
-                msg='This tag should be created.'
-            )
+        name = 'can be create this tag'
+        was_created = create_tag(name)
+        self.assertEqual(
+            was_created.name,
+            name,
+            msg='This tag should be created.'
+        )
 
+        try:
             wrong_tag = create_tag(None)
             self.assertIs(
                 wrong_tag.name,
@@ -96,7 +92,7 @@ class TagModelTests(TestCase):
 
     def test_color_default(self):
         """Default color must be expected."""
-        expected = '#DCDCDC'
+        expected = '#3F7C82'
         self.assertFalse(
             Tag('a tag').color != expected,
             msg='Default color not expected (Expected: {hex}).'.format(
@@ -113,41 +109,46 @@ class TagModelTests(TestCase):
         )
         self.assertFalse(
             tiny.check_color_format(),
-            "Hexadecimal '{hex}' color is very short.".format(hex=color),
+            "Hexadecimal '{hex}' color is wrong because is very "
+            "short.".format(hex=color),
         )
 
     def test_color_was_big(self):
         """Code color must be seven characters."""
         color = '#1234567'
-        big = create_tag(
-            'big color tag',
-            color
-        )
-        self.assertFalse(
-            big.check_color_format(),
-            "Hexadecimal '{hex}' color is very long.".format(hex=color),
-        )
+        try:
+            create_tag(
+                'big color tag',
+                color
+            )
+            self.assertFalse(
+                True,
+                "Hexadecimal '{hex}' color shouldn't possible create it "
+                "because is very long.".format(hex=color),
+            )
+        except DataError as e:
+            pass
 
-    def test_color_was_hexadecimal(self):
-        """Code color must be hexadecimal code."""
-        color = '#1F34A6'
+    def test_color_was_correctly(self):
+        """Code color must be hexadecimal code and seven chars lenght."""
+        color = '#ABCDEF'
         hexa = create_tag(
             'hexa color tag',
             color
         )
-        self.assertFalse(
+        self.assertTrue(
             hexa.check_color_format(),
             "Hexadecimal '{hex}' color is not hexadecimal.".format(hex=color),
         )
 
-    def test_color_was_correctly(self):
-        """Code color must be hexadecimal code."""
-        color = '#1F34A6'
+    def test_color_was_hexadecimal(self):
+        """Code color must be hexadecimal code and seven chars lenght."""
+        color = '#X1F4A6'
         tag = create_tag(
-            'tag color tag',
+            'wrong color',
             color
         )
-        self.assertTrue(
+        self.assertFalse(
             tag.check_color_format(),
-            "Error not expected. Format should was correctly.",
+            "Hexadecimal '{hex}' format isn't correctly".format(hex=color),
         )

@@ -14,7 +14,7 @@ class Tag(models.Model):
         unique=True,
         )
     color = models.CharField(
-        default='#DCDCDC',
+        default='#3F7C82',
         max_length=7,
         validators=[RegexValidator(
             regex='^#.{6}$',
@@ -25,8 +25,17 @@ class Tag(models.Model):
     )
 
     def check_color_format(self):
-        """Check long and hexa code of color."""
-        pass
+        """Check long and hexa code of color.
+
+        Correct format requires seven characters. First '#' and six hex chars.
+        """
+        try:
+            if(self.color and len(self.color) == 7 and self.color[0] == '#'):
+                int(self.color[1:], 16)
+                return True
+        except ValueError:
+            pass
+        return False
 
     def __str__(self):
         """Printable object."""
