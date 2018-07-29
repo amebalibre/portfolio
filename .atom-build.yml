@@ -1,0 +1,15 @@
+name: "default"
+cmd: "echo caca"
+targets:    
+    - extraTargetName:
+      name: "dos"
+      cmd: "python ${PROJECT}/manage.py runserver"
+      # cmd: "ls"
+      args:
+        # - "-c"
+        # - "source .env/bin/activate"
+        # - "python ${PROJECT}/manage.py runserver"
+      cwd: "/home/$USER/Proyectos/django"
+      env:
+        PROJECT: "mysite"
+      # sh: false

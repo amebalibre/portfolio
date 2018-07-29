@@ -1,0 +1,26 @@
+# EditorConfig is awesome: https://EditorConfig.org
+
+# top-most EditorConfig file
+root = true
+
+# Unix-style newlines with a newline ending every file
+[*]
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.{py,yml,yaml,html}]
+charset = utf-8
+
+[*.{py,yml,yaml}]
+indent_style = space
+
+[*.{html,css}]
+indent_style = tab
+tab_width = 4
+
+[*.py]
+indent_size = 4
+
+[*.{yml, yaml}]
+indent_size = 2
