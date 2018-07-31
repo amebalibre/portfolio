@@ -251,40 +251,74 @@ class PostModelTests(TestCase):
                 msg="It shouldn't be possible to assign the same title."
             )
 
-        def test_title_not_null(self):
-            """Title must be mandatory."""
-            title = 'can be create this post'
-            was_created = create_post(title)
-            self.assertEqual(
-                was_created.title,
-                title,
-                msg='This post should be created.'
+    def test_title_not_null(self):
+        """Title must be mandatory."""
+        title = 'can be create this post'
+        was_created = create_post(title)
+        self.assertEqual(
+            was_created.title,
+            title,
+            msg='This post should be created.'
+        )
+
+        try:
+            wrong_post = create_post(None)
+            self.assertIs(
+                wrong_post.title,
+                None,
+                msg='Exception was spected. Title should have been null.',
             )
+        except IntegrityError as e:
+            val, msg = get_assert_attrs(e, 'not-null')
+            self.assertTrue(val, msg)
 
-            try:
-                wrong_post = create_post(None)
-                self.assertIs(
-                    wrong_post.title,
-                    None,
-                    msg='Exception was spected. Title should have been null.',
-                )
-            except IntegrityError as e:
-                val, msg = get_assert_attrs(e, 'not-null')
-                self.assertTrue(val, msg)
-
-        def test_was_published_with_future_question(self):
-            """was_published() returns False for posts at the future."""
-            time = timezone.now() + datetime.timedelta(days=1)
-            future_question = create_post('On the future', pub_date=time)
-
-            self.assertIs(future_question.was_published(), False)
-
-        def test_was_published_with_recent_question(self):
-            """was_published() returns True for posts at today or on past."""
-            time = timezone.now() - datetime.timedelta(
-                hours=23,
-                minutes=59,
-                seconds=59
+    def test_title_length(self):
+        """Name must be 200 chars or less."""
+        title = '0123456789'*20 + 'X'
+        try:
+            wrong_length = create_post(title)
+            self.assertFalse(
+                True,
+                "Title '{title}' shouldn't possible create it "
+                "because is very large".format(
+                    title=wrong_length
+                ),
             )
-            recent_question = create_post('On the past', pub_date=time)
-            self.assertIs(recent_question.was_published(), True)
+        except DataError as e:
+            pass
+
+    def test_pub_date_default_is_today(self):
+        """Deafult value for pub_date should be today."""
+        today = timezone.now()
+        tformat = '%d%m%Y'
+        future_question = create_post('a title')
+        self.assertIs(
+            future_question.pub_date.strftime(tformat) ==
+            today.strftime(tformat), True
+        )
+
+    def test_pub_date_default_is_not_today(self):
+        """Deafult value for pub_date should be today."""
+        today = timezone.now() + datetime.timedelta(days=1)
+        tformat = '%d%m%Y'
+        future_question = create_post('a title')
+        self.assertIs(
+            future_question.pub_date.strftime(tformat) ==
+            today.strftime(tformat), False
+        )
+
+    def test_was_published_with_future_question(self):
+        """was_published() returns False for posts at the future."""
+        time = timezone.now() + datetime.timedelta(days=1)
+        future_question = create_post('On the future', pub_date=time)
+        self.assertIs(future_question.was_published(), False)
+
+    def test_was_published_with_recent_question(self):
+        """was_published() returns True for posts at today or on past."""
+        time = timezone.now() - datetime.timedelta(
+            hours=23,
+            minutes=59,
+            seconds=59
+        )
+        recent_question = create_post('On the past', pub_date=time)
+        self.assertIs(recent_question.was_published(), True)
