@@ -9,21 +9,17 @@ end_of_line = lf
 insert_final_newline = true
 trim_trailing_whitespace = true
 
-[*.{py,yml,yaml,html,md}]
+[*.{html,md,py,scss,yaml,yml}]
 charset = utf-8
 
-[*.{py,yml,yaml,md}]
+[*.{md,py,scss,yaml,yml}]
 indent_style = space
 
-[*.{html,css}]
+[*.html]
 indent_style = tab
-tab_width = 4
 
-[*.md]
-indent_size = 2
-
-[*.py]
+[*.{html,py}]
 indent_size = 4
 
-[*.{yml,yaml,md}]
+[*.{md,scss,yaml,yml}]
 indent_size = 2

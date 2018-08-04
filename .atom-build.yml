@@ -1,15 +1,12 @@
 name: "default"
-cmd: "echo caca"
-targets:    
+cmd: "echo without command"
+targets:
     - extraTargetName:
-      name: "dos"
-      cmd: "python ${PROJECT}/manage.py runserver"
-      # cmd: "ls"
+      cmd: "npm"
+      name: "build-css"
       args:
-        # - "-c"
-        # - "source .env/bin/activate"
-        # - "python ${PROJECT}/manage.py runserver"
-      cwd: "/home/$USER/Proyectos/django"
+        - "run"
+        - "build-css"
+      cwd: "/home/$USER/$PROJECT"
       env:
-        PROJECT: "mysite"
-      # sh: false
+        PROJECT: "Proyectos/django/portfolio"
