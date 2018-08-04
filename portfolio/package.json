@@ -1,0 +1,32 @@
+{
+  "name": "portfolio",
+  "version": "1.0.0",
+  "description": "Colaborative project of portfolio",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \\\"Error: no test specified\\\" && exit 1",
+    "build-css": "node-sass --include-path scss blog/static/blog/scss/ -o blog/static/blog/css/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amebalibre/portfolio.git"
+  },
+  "keywords": [
+    "portfolio",
+    "django",
+    "python"
+  ],
+  "author": "amebalibre",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/amebalibre/portfolio/issues"
+  },
+  "homepage": "https://github.com/amebalibre/portfolio#readme",
+  "dependencies": {
+    "sass": "^1.10.3"
+  },
+  "devDependencies": {
+    "node-sass": "^4.9.2",
+    "nodemon": "^1.18.3"
+  }
+}
