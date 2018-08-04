@@ -1,0 +1,17 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'blog/css/style.css' %}" />
+
+{% if latest_post_list %}
+<ul>
+	{% for post in latest_post_list %}
+	<li>title: <a href="{% url 'blog:detail' post.id%}"><strong>{{ post.title }}</strong></a></li>
+	<li>content: <strong>{{ post.content }}</strong></li>
+	<li>images: <strong>{{ post.images }}</strong></li>
+	<li>pub_date: <strong>{{ post.pub_date }}</strong></li>
+	<li>tags: <strong>{{ post.tags }}</strong></li>
+	<br/>
+	{% endfor %}
+</ul>
+{% else %}
+<p>No posts are available.</p>
+{% endif %}
