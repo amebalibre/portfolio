@@ -1,17 +1,83 @@
-{% load static %}
-<link rel="stylesheet" type="text/css" href="{% static 'blog/css/style.css' %}" />
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	{% load static %}
+	<link rel="stylesheet" type="text/css" href="{% static 'blog/css/style.css' %}" />
+	<title>Microblog</title>
+	<script defer src="https://use.fontawesome.com/releases/v5.1.0/js/all.js"></script>
+</head>
+<body>
 
-{% if latest_post_list %}
-<ul>
-	{% for post in latest_post_list %}
-	<li>title: <a href="{% url 'blog:detail' post.id%}"><strong>{{ post.title }}</strong></a></li>
-	<li>content: <strong>{{ post.content }}</strong></li>
-	<li>images: <strong>{{ post.images }}</strong></li>
-	<li>pub_date: <strong>{{ post.pub_date }}</strong></li>
-	<li>tags: <strong>{{ post.tags }}</strong></li>
-	<br/>
-	{% endfor %}
-</ul>
-{% else %}
-<p>No posts are available.</p>
-{% endif %}
+	<section class="hero">
+		<div class="hero-body">
+			<div class="container">
+				<div>
+					<h1 class="title is-1 has-text-centered">Simple Microblog</h1>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	{% if latest_post_list %}
+	<section class="section">
+		<div class="columns is-desktop">
+			{% for post in latest_post_list %}
+			<div class="column is-4">
+				<div class="box">
+					<article class="media">
+						<div class="media-content">
+							<div class="content">
+								<p>
+									<header>
+										<a href="{% url 'blog:detail' post.id%}">
+											<h1 class="title has-text-centered">{{ post.title }}</h1>
+										</a>
+										<p class="smallest has-text-centered">{{ post.pub_date }}</p>
+									</header>
+									<p class="has-text-justified">{{ post.content }}</p>
+								</p>
+							</div>
+							<nav class="level is-mobile">
+  							<div class="level-left">
+  							<!-- <a class="level-item" aria-label="reply">
+  							<span class="icon is-small">
+  							<i class="fas fa-reply" aria-hidden="true"></i>
+  							</span>
+  							</a>
+  							<a class="level-item" aria-label="retweet">
+  							<span class="icon is-small">
+  							<i class="fas fa-retweet" aria-hidden="true"></i>
+  							</span>
+  							</a>
+  							<a class="level-item" aria-label="like">
+  							<span class="icon is-small">
+  							<i class="fas fa-heart" aria-hidden="true"></i>
+  							</span>
+  							</a> -->
+  							</div>
+							<div class="level-right">
+  							{% if latest_post_list %}
+  							<div class="tags">
+    							{% for tag in post.tags.all %}
+      							<span class="tag" style="background-color: {{ tag.color }}">
+      							  {{ tag.name }}
+      							</span>
+    							{% endfor %}
+  							</div>
+  							{% endif %}
+							</div>
+							</nav>
+						</div>
+					</article>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+	</section>
+	{% else %}
+	<p>No posts are available.</p>
+	{% endif %}
+</body>
+</html>
