@@ -1,7 +1,7 @@
 """All Views."""
 from django.views import generic
 
-from .models import Post
+from .models.post import Post
 
 
 class IndexView(generic.ListView):
