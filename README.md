@@ -9,5 +9,7 @@
 *   Update npm package `su -c "npm install npm@latest -g"`.
 *   Execute nexts command over project directory.
 *   Init npm over project `npm init`.
-*   Install sass dependency `npm install sass --save`.
-*   Install node-sass dependency `npm install node-sass --save`.
+*   Install sass dependency `npm install -D sass`.
+*   Install node-sass dependency `npm install -D node-sass`.
+*   Install bulma dependency `npm install -D bulma`.
+*   Install nodemon dependency `npm install -D nodemon`.
