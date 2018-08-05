@@ -6,9 +6,9 @@ from django.db.utils import DataError
 from django.db.utils import IntegrityError
 from django.utils import timezone
 
-from .models import Image
-from .models import Post
-from .models import Tag
+from .models.image import Image
+from .models.post import Post
+from .models.tag import Tag
 
 
 def create_tag(name, color=None):
