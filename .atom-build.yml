@@ -2,11 +2,20 @@ name: "default"
 cmd: "echo without command"
 targets:
     - extraTargetName:
-      cmd: "npm"
       name: "build-css"
+      cmd: "npm"
       args:
         - "run"
         - "build-css"
+      cwd: "/home/$USER/$PROJECT"
+      env:
+        PROJECT: "Proyectos/django/portfolio"
+    - extraTargetName:
+      name: "css-watch"
+      cmd: "npm"
+      args:
+        - "run"
+        - "css-watch"
       cwd: "/home/$USER/$PROJECT"
       env:
         PROJECT: "Proyectos/django/portfolio"

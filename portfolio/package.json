@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \\\"Error: no test specified\\\" && exit 1",
-    "build-css": "node-sass --include-path scss blog/static/blog/scss/ -o blog/static/blog/css/"
+    "build-css": "node-sass --include-path scss blog/static/blog/scss/ -o blog/static/blog/css/",
+    "css-watch": "npm run build-css -- --watch",
+    "start": "npm run css-watch"
   },
   "repository": {
     "type": "git",
@@ -23,10 +25,10 @@
   },
   "homepage": "https://github.com/amebalibre/portfolio#readme",
   "dependencies": {
-    "bulma": "^0.7.1",
-    "sass": "^1.10.3"
   },
   "devDependencies": {
+    "bulma": "^0.7.1",
+    "sass": "^1.10.3",
     "node-sass": "^4.9.2",
     "nodemon": "^1.18.3"
   }

@@ -12,14 +12,11 @@ trim_trailing_whitespace = true
 [*.{html,md,py,scss,yaml,yml}]
 charset = utf-8
 
-[*.{md,py,scss,yaml,yml}]
+[*.{html,md,py,scss,yaml,yml}]
 indent_style = space
 
-[*.html]
-indent_style = tab
-
-[*.{html,py}]
+[*.py]
 indent_size = 4
 
-[*.{md,scss,yaml,yml}]
+[*.{html,md,scss,yaml,yml}]
 indent_size = 2
