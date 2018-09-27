@@ -5,7 +5,7 @@ from .models.post import Post
 
 
 class IndexView(generic.ListView):
-    """Generic Index view for posts.
+    """Landspage view.
 
     Shows latest six published posts. Post is published when pub_date is lower
     to today
