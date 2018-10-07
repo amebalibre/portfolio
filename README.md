@@ -3,6 +3,8 @@
 
 ## Requeriments
 
+*   Download and install [python_utils](https://github.com/amebalibre/python_utils) `pip install ./amebalibre_utils`
+
 ### Development environment
 
 *   [nodejs](https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions). (Check for your distro)

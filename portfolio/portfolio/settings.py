@@ -123,3 +123,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Path of fileconfig depending of environment.
+# If not defined a path, then default path is on root of django module
+ENVIRONMENT = {
+    'development': '',
+}
+# Fileconfig name of file with constants.
+FILECONFIG = 'conf.ini'
