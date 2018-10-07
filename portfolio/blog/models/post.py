@@ -1,12 +1,13 @@
 """Models of Blog."""
+import alu_configparser as alu_cp
+import datetime
+
 from django.conf import settings
 from django.db import models
 from django.utils import timezone
 
 from .image import Image
 from .tag import Tag
-
-import alu_configparser as alu_cp
 
 
 class Post(models.Model):
@@ -22,7 +23,7 @@ class Post(models.Model):
     images = models.ManyToManyField(Image)
     pub_date = models.DateTimeField(
         'Date Published',
-        auto_now_add=True,
+        default=datetime.date.today,
     )
     tags = models.ManyToManyField(Tag)
 
@@ -45,7 +46,10 @@ class Post(models.Model):
         _to = self.content[:_from].rfind(' ')
         return '{content}{excess}'.format(
             content=self.content[:_to],
-            excess='...' if self.content[_from:] else ''
+            excess=(
+                config.get('portfolio.blog', 'excess_content')
+                if self.content[_from:] else ''
+            )
         )
 
     def __str__(self):
