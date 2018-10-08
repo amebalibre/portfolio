@@ -1,8 +1,6 @@
 """All Views."""
 from django.views import generic
-
 from .models.post import Post
-from .models.post import Tag
 
 
 class IndexView(generic.ListView):
@@ -17,25 +15,27 @@ class IndexView(generic.ListView):
 
     def get_queryset(self):
         """Return the last six published posts."""
-        return Post.objects.order_by('-pub_date')[:6]
+        if ('tag' in self.request.GET.keys()):
 
+            def tags_name_in_all(objects, filters):
+                """Return all posts with all tags into list.
 
-class FilterTagView(generic.ListView):
-    """Landspage filtered view from tags.
+                Recursive method for extract all posts with
+                all tags into filters field.
+                """
+                if not filters:
+                    return objects
+                return tags_name_in_all(objects.filter(
+                    tags__name=filters.pop()), filters
+                )
 
-    Shows posts with tags coincidence.
-    """
+            return tags_name_in_all(
+                Post.objects,
+                list(tuple(self.request.GET.getlist('tag')))
+            )
 
-    template_name = 'blog/index.html'
-    context_object_name = 'posts'
-
-    def get_queryset(self):
-        """Return the last six published posts."""
-        return Post.objects.filter(
-            tags__in=Tag.objects.filter(
-                name=self.kwargs['tag']
-            ).values('id')
-        )
+        else:
+            return Post.objects.order_by('-pub_date')[:6]
 
 
 class DetailView(generic.DetailView):

@@ -62,7 +62,9 @@
   							<div class="tags">
     							{% for tag in post.tags.all %}
       							<span class="tag" style="background-color: {{ tag.color }}">
-      							  {{ tag.name }}
+												<a href="{% url 'blog:index'%}?{{ request.GET.urlencode }}&tag={{ tag.name }}">
+                        {{ tag.name }}
+                        </a>
       							</span>
     							{% endfor %}
   							</div>
