@@ -1,4 +1,5 @@
 """All Views."""
+from django.conf import settings
 from django.views import generic
 from .models.post import Post
 
@@ -15,6 +16,13 @@ class IndexView(generic.ListView):
 
     def get_queryset(self):
         """Return the last six published posts."""
+        el_per_page = settings.CONSTS.getint(
+            'portfolio.blog',
+            'el_per_page'
+        )
+
+        posts = []
+
         if ('tag' in self.request.GET.keys()):
 
             def tags_name_in_all(objects, filters):
@@ -29,13 +37,18 @@ class IndexView(generic.ListView):
                     tags__name=filters.pop()), filters
                 )
 
-            return tags_name_in_all(
+            posts = tags_name_in_all(
                 Post.objects,
-                list(tuple(self.request.GET.getlist('tag')))
+                # TODO[index.html -> request.GET.urlencode] Can generate a...
+                # ... url with duplicates, then it's required a set conversion
+                # list(self.request.GET.getlist('tag')[:])
+                list(tuple(set(self.request.GET.getlist('tag')))[:])
             )
 
         else:
-            return Post.objects.order_by('-pub_date')[:6]
+            posts = Post.objects
+
+        return posts.order_by('-pub_date')[:el_per_page]
 
 
 class DetailView(generic.DetailView):

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
+import alu_configparser as alu_cp
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -129,5 +130,9 @@ STATIC_URL = '/static/'
 ENVIRONMENT = {
     'development': '',
 }
-# Fileconfig name of file with constants.
-FILECONFIG = 'conf.ini'
+
+# Environment Constants
+CONSTS = alu_cp.Configparser(
+    path=ENVIRONMENT['development'],
+    fname='conf.ini',
+).get()

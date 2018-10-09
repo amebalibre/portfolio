@@ -1,5 +1,4 @@
 """Models of Blog."""
-import alu_configparser as alu_cp
 import datetime
 
 from django.conf import settings
@@ -38,16 +37,12 @@ class Post(models.Model):
     @property
     def short_content(self):
         """Return a fraction of the content."""
-        config = alu_cp.Configparser(
-            path=settings.ENVIRONMENT['development'],
-            fname=settings.FILECONFIG,
-        ).get()
-        _from = config.getint('portfolio.blog', 'short_content')
+        _from = settings.CONSTS.getint('portfolio.blog', 'short_content')
         _to = self.content[:_from].rfind(' ')
         return '{content}{excess}'.format(
             content=self.content[:_to],
             excess=(
-                config.get('portfolio.blog', 'excess_content')
+                settings.CONSTS.get('portfolio.blog', 'excess_content')
                 if self.content[_from:] else ''
             )
         )
