@@ -21,6 +21,11 @@ $box-shadow: none;
 $tag-radius: 12px;
 $tag-color: white;
 
+div.tags a span.tag {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
 .tag {
   font-weight: bold;
 }
