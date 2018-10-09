@@ -8,6 +8,10 @@
 $font-color: #0F4037;
 $background-color: #F6FAF6;
 $navbar-color: #A0BFC0;
+$newspaper-columns: 2;
+$newspaper-gap: 40px;
+$pagination-background:#D3BFD8;
+$pagination-color:#76768F;
 
 // // Update Bulma's global variables
 $family-sans-serif: "Nunito", sans-serif;
@@ -21,13 +25,45 @@ $box-shadow: none;
 $tag-radius: 12px;
 $tag-color: white;
 
+div.content p.has-text-justified {
+  margin-top: 10px;
+}
+
 div.tags a span.tag {
-  margin-left: 5px;
-  margin-right: 5px;
+  margin-top: 0px;
+  margin-left: 4px;
+  margin-right: 4px;
+}
+
+.newspaper {
+  -webkit-column-count: $newspaper-columns; /* Chrome, Safari, Opera */
+  -moz-column-count: $newspaper-columns; /* Firefox */
+  column-count: $newspaper-columns;
+  -webkit-column-gap: $newspaper-gap; /* Chrome, Safari, Opera */
+  -moz-column-gap: $newspaper-gap; /* Firefox */
+  column-gap: $newspaper-gap;
+
 }
 
 .tag {
   font-weight: bold;
+}
+
+.pagination {
+  color: $pagination-color !important;
+  background-color: $pagination-background !important;
+  border-radius: 30px !important;
+}
+
+.pagination-current {
+  background-color: darken($pagination-background, 10%) !important;
+}
+
+.pagination-blank {
+  // margin-top: 6px !important;
+  // padding:20px !important;
+  // margin-top: 15px !important;
+  background-color: lighten($pagination-background, 12%) !important;
 }
 
 header h1.title {

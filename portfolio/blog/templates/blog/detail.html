@@ -1,5 +1,65 @@
-title: <strong>{{ post.title }}</strong></br>
-content: <strong>{{ post.content }}</strong></br>
-images: <strong>{{ post.images }}</strong></br>
-pub_date: <strong>{{ post.pub_date }}</strong></br>
-tags: <strong>{{ post.tags }}</strong></br>
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	{% load static %}
+	<link rel="stylesheet" type="text/css" href="{% static 'blog/css/style.css' %}" />
+	<title>Microblog</title>
+	<script defer src="https://use.fontawesome.com/releases/v5.1.0/js/all.js"></script>
+</head>
+<body>
+
+  <section class="hero">
+		<div class="hero-body">
+			<div class="container">
+				<div>
+          <a href="{% url 'blog:index'%}">
+  					<h1 class="title is-1 has-text-centered">
+                Simple Microblog
+            </h1>
+          </a>
+				</div>
+			</div>
+		</div>
+	</section>
+
+{% if post %}
+<section class="section">
+  <div class="level-right">
+    <div class="tags">
+      {% for tag in post.tags.all %}
+      <a href="{% url 'blog:index'%}?{{ request.GET.urlencode }}&tag={{ tag.name }}">
+        <span class="tag" style="background-color: {{ tag.color }}">
+          {{ tag.name }}
+        </span>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="columns is-multiline is-desktop">
+    <div class="column">
+      <div class="box">
+        <article class="media">
+            <div class="content">
+              <header>
+                <a href="#">
+                  <h1 class="title has-text-centered">{{ post.title|title }}</h1>
+                </a>
+                <p class="smallest has-text-centered">{{ post.pub_date }}</p>
+              </header>
+              <p class="has-text-justified newspaper">{{ post.content|capfirst }}</p>
+            </div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+{% else %}
+<div class="notification is-warning">
+  <button class="delete"></button>
+  No posts are available!
+</div>
+{% endif %}
+</body>
+</html>

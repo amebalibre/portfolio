@@ -2,25 +2,25 @@
 from django.conf import settings
 from django.views import generic
 from .models.post import Post
+# TODO eliminar imports no usados
+# TODO Sólo un import por línea
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 
 
 class IndexView(generic.ListView):
     """Landspage view.
 
-    Shows latest six published posts. Post is published when pub_date is lower
-    to today
+    Shows N published posts.
+    Can be shows N latests published posts, N paginated posts or N filtered
+    posts. N its defined on settings.CONSTS file.
+    (A post is published when pub_date is lower to today)
     """
 
     template_name = 'blog/index.html'
     context_object_name = 'posts'
 
     def get_queryset(self):
-        """Return the last six published posts."""
-        el_per_page = settings.CONSTS.getint(
-            'portfolio.blog',
-            'el_per_page'
-        )
-
+        """Return the last paginated list of posts."""
         posts = []
 
         if ('tag' in self.request.GET.keys()):
@@ -48,7 +48,13 @@ class IndexView(generic.ListView):
         else:
             posts = Post.objects
 
-        return posts.order_by('-pub_date')[:el_per_page]
+        el_per_page = settings.CONSTS.getint(
+            'portfolio.blog',
+            'el_per_page'
+        )
+        paginator = Paginator(posts.order_by('-pub_date'), el_per_page)
+        page = self.kwargs.get('page', 1)
+        return paginator.page(page)
 
 
 class DetailView(generic.DetailView):
